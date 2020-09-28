@@ -1,27 +1,27 @@
 package com.get_wage;
 import java.util.Random;
 
-public class EmpWageCalc {
+public class EmpWageCalc implements ComputeEmpWageInterface {
 
 	public static final int IS_FULL_TIME = 1;
 	public static final int IS_PART_TIME = 2;
-
    
 	public int numOfCompany = 0;
-	private EmpWageComp[] empWageCompArray;
+	private EmpWageComp[] companyEmpWageArray;
 	
     public EmpWageCalc() {
-    	empWageCompArray = new EmpWageComp[5];
+    	companyEmpWageArray = new EmpWageComp[5];
     }
-    private void addCompanyEmpWage(String company, int empRatePerHour,int numOfWorkingDays, int maxHoursPerMonth ) {
-    	empWageCompArray[numOfCompany] = new EmpWageComp(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
+    @Override
+    public void addCompanyEmpWage(String company, int empRatePerHour,int numOfWorkingDays, int maxHoursPerMonth ) {
+    	companyEmpWageArray[numOfCompany] = new EmpWageComp(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
     numOfCompany++;
     }
-    
-	private void computeEmpWage() {
+    @Override
+	public void computeWage() {
 		for(int i =0; i < numOfCompany; i++) {
-			empWageCompArray[i].setTotalEmpWage(this.computeWage(empWageCompArray[i]));
-		System.out.println(empWageCompArray[i]);
+			companyEmpWageArray[i].setTotalEmpWage(this.computeWage(companyEmpWageArray[i]));
+		System.out.println(companyEmpWageArray[i]);
 		}
 	}
 	private int computeWage(EmpWageComp companyEmpWage) {
@@ -50,11 +50,16 @@ public class EmpWageCalc {
        return totalEmpHours * companyEmpWage.empRatePerHour;
 
 	}
+	
+	@Override
+	public int getTotalWage(String company) {
+		return 0;
+	}
 	 public static void main(String[] args) {
 		 EmpWageCalc empWageBuilder = new EmpWageCalc();
-		 empWageBuilder.addCompanyEmpWage("Reliance",  20,  2,  10);
-		 empWageBuilder.addCompanyEmpWage("BigBazar",  10,  4,  20);
-		 empWageBuilder.computeEmpWage();
+		 empWageBuilder.addCompanyEmpWage("Reliance",  20,  5,  10);
+		 empWageBuilder.addCompanyEmpWage("BigBasket",  10,  4,  20);
+		 empWageBuilder.computeWage();
 	 }
 	
 }
