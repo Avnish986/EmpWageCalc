@@ -2,7 +2,7 @@ package com.get_wage;
 
 
 public class EmpWageComp {
-    public final String company;
+	public final String company;
     public final int empRatePerHour;
     public final int numOfWorkingDays;
     public final int maxHoursPerMonth;
@@ -14,6 +14,7 @@ public class EmpWageComp {
     	this.empRatePerHour = empRatePerHour;
     	this.numOfWorkingDays = numOfWorkingDays;
     	this.maxHoursPerMonth = maxHoursPerMonth;
+    	totalEmpWage = 0;
     	
     }
     public void setTotalEmpWage(int totalEmpWage) {
