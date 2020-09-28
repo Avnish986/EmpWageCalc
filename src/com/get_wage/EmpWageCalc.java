@@ -5,55 +5,56 @@ public class EmpWageCalc {
 
 	public static final int IS_FULL_TIME = 1;
 	public static final int IS_PART_TIME = 2;
-    private final String company;
-    private final int empRatePerHour;
-    private final int numOfWorkingDays;
-    private final int maxHoursPerMonth;
-    private int totalEmpWage;
+
+   
+	public int numOfCompany = 0;
+	private EmpWageComp[] empWageCompArray;
 	
+    public EmpWageCalc() {
+    	empWageCompArray = new EmpWageComp[5];
+    }
+    private void addCompanyEmpWage(String company, int empRatePerHour,int numOfWorkingDays, int maxHoursPerMonth ) {
+    	empWageCompArray[numOfCompany] = new EmpWageComp(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
+    numOfCompany++;
+    }
+    
+	private void computeEmpWage() {
+		for(int i =0; i < numOfCompany; i++) {
+			empWageCompArray[i].setTotalEmpWage(this.computeWage(empWageCompArray[i]));
+		System.out.println(empWageCompArray[i]);
+		}
+	}
+	private int computeWage(EmpWageComp companyEmpWage) {
+		int empHours = 0, totalEmpHours = 0, totalWorkingDays = 0;
 
-	public EmpWageCalc(String company, int empRatePerHour, int numOfWorkingDays, int maxHoursPerMonth) {
-	this.company = company;
-	this.empRatePerHour = empRatePerHour;
-	this.numOfWorkingDays = numOfWorkingDays;
-	this.maxHoursPerMonth = maxHoursPerMonth;
-	}    
-	public void computeEmpWage() {
+
+		while (totalEmpHours <= companyEmpWage.maxHoursPerMonth && totalWorkingDays < companyEmpWage.numOfWorkingDays) {
+			totalWorkingDays++;
+            int empCheck = (int)Math.floor(Math.random()* 10)% 3;
+
+			switch (empCheck) {
+			case IS_PART_TIME:
+				empHours = 4;
+				break;
+			case IS_FULL_TIME:
+				empHours = 8;
+				break;
+			default:
+				empHours = 0;
+			}
+
+
+			totalEmpHours += empHours;
+			System.out.println("Day: " + totalWorkingDays + " Emp Hr:  " + empHours);
+		}
+       return totalEmpHours * companyEmpWage.empRatePerHour;
+
+	}
+	 public static void main(String[] args) {
+		 EmpWageCalc empWageBuilder = new EmpWageCalc();
+		 empWageBuilder.addCompanyEmpWage("Reliance",  20,  2,  10);
+		 empWageBuilder.addCompanyEmpWage("BigBazar",  10,  4,  20);
+		 empWageBuilder.computeEmpWage();
+	 }
 	
-		int empHrs = 0, totalEmpHrs = 0, totalWorkingDays = 0;
-	while (totalEmpHrs <= maxHoursPerMonth && totalWorkingDays < numOfWorkingDays) {
-	totalWorkingDays++;
-
-	Random r = new Random();
-	int empCheck = r.nextInt(3);
-
-	switch (empCheck) {
-	case IS_FULL_TIME:
-	 empHrs = 8;
-	 break;
-	case IS_PART_TIME:
-	 empHrs = 4;
-	 break;
-	default:
-	 empHrs = 0;
-
-	}
-	totalEmpHrs += empHrs;
-	System.out.println("Day : " + totalWorkingDays + "empHrs : " + empHrs);
-	}
-	totalEmpWage = totalEmpHrs * empRatePerHour;
-	}
-	
-	@Override
-	public String toString() {
-	return "Total Emp Wage for Company: " + company +" is: "+ totalEmpWage;
-	}
-	public static void main(String[] args) {
-		EmpWageCalc reliance = new EmpWageCalc("Reliance", 15, 25, 100);
-		EmpWageCalc bigBasket = new EmpWageCalc("bigBasket", 20, 27, 90);
-		reliance.computeEmpWage();
-		System.out.println(reliance);
-		bigBasket.computeEmpWage();
-		System.out.println(bigBasket);
-	}
 }
