@@ -9,32 +9,33 @@ public class EmpWageCalc implements ComputeEmpWageInterface{
 	public static final int IS_FULL_TIME = 1;
 	public static final int IS_PART_TIME = 2;
    
-	private ArrayList<EmpWageComp> companyEmpWageList;
+	private ArrayList<EmpWageComp> EmpWageCompList;
 	private Map<String, EmpWageComp> companyToEmpWageMap;
 	
     public EmpWageCalc() {
-    	companyEmpWageList = new ArrayList<>();
+    	EmpWageCompList = new ArrayList<>();
     	companyToEmpWageMap = new HashMap<>();
     }
     @Override
     public void addCompanyEmpWage(String company, int empRatePerHour,int numOfWorkingDays, int maxHoursPerMonth ) {
-    	EmpWageComp companyEmpWage = new EmpWageComp(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
-		companyEmpWageList.add(companyEmpWage);
-		companyToEmpWageMap.put(company, companyEmpWage);
+		EmpWageComp EmpWageComp = new EmpWageComp(company, empRatePerHour, numOfWorkingDays, maxHoursPerMonth);
+		EmpWageCompList.add(EmpWageComp);
+		companyToEmpWageMap.put(company, EmpWageComp);
 
     }
     @Override
 	public void computeWage() {
-    	EmpWageComp companyEmpWage = companyEmpWageList.get(0);
-		companyEmpWage.setTotalEmpWage(this.computeEmpWage(companyEmpWage));
-		System.out.println(companyEmpWage);
-
+    	for(int i = 0; i < EmpWageCompList.size(); i++){
+		EmpWageComp EmpWageComp = EmpWageCompList.get(i);
+		EmpWageComp.setTotalEmpWage(this.computeEmpWage(EmpWageComp));
+		System.out.println(EmpWageComp);
+      }
 	}
-	private int computeEmpWage(EmpWageComp companyEmpWage) {
+	private int computeEmpWage(EmpWageComp EmpWageComp) {
 		int empHours = 0, totalEmpHours = 0, totalWorkingDays = 0;
 
 
-		while (totalEmpHours <= companyEmpWage.maxHoursPerMonth && totalWorkingDays < companyEmpWage.numOfWorkingDays) {
+		while (totalEmpHours <= EmpWageComp.maxHoursPerMonth && totalWorkingDays < EmpWageComp.numOfWorkingDays) {
 			totalWorkingDays++;
             int empCheck = (int)Math.floor(Math.random()* 10)% 3;
 
@@ -53,7 +54,7 @@ public class EmpWageCalc implements ComputeEmpWageInterface{
 			totalEmpHours += empHours;
 			System.out.println("Day: " + totalWorkingDays + " Emp Hr:  " + empHours);
 		}
-       return totalEmpHours * companyEmpWage.empRatePerHour;
+       return totalEmpHours * EmpWageComp.empRatePerHour;
 
 	}
 	
@@ -63,11 +64,9 @@ public class EmpWageCalc implements ComputeEmpWageInterface{
 	}
 	 public static void main(String[] args) {
 		 EmpWageCalc empWageBuilder = new EmpWageCalc();
-		 //empWageBuilder.addCompanyEmpWage("Reliance",  20,  5,  10);
-		 empWageBuilder.addCompanyEmpWage("BigBasket",  20,  5,  10);
-		 empWageBuilder.computeWage();
+		 empWageBuilder.addCompanyEmpWage("Reliance",  20,  5,  10);
+		 empWageBuilder.addCompanyEmpWage("BigBasket",  10,  4,  20);
 		 empWageBuilder.computeWage();
 	 }
 	
 }
-
